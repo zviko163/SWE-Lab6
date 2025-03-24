@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HomeBot - Setup Guide</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                line-height: 1.6;
+            }
+
+            header {
+                background: #4e54c8;
+                background: linear-gradient(135deg, #4e54c8, #8f94fb);
+                color: white;
+                padding: 20px;
+                margin-bottom: 30px;
+                border-radius: 5px;
+            }
+
+            h1 {
+                margin: 0;
+            }
+
+            h2 {
+                color: #4e54c8;
+                border-bottom: 2px solid #8f94fb;
+                padding-bottom: 5px;
+            }
+
+            h3 {
+                color: #4e54c8;
+            }
+
+            a {
+                color: #4e54c8;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            footer {
+                margin-top: 40px;
+                padding: 15px;
+                background: #1a1a2e;
+                color: white;
+                text-align: center;
+                border-radius: 5px;
+            }
+
+            .section {
+                margin-bottom: 30px;
+            }
+
+            code {
+                background-color: #f4f4f4;
+                padding: 2px 5px;
+                border-radius: 3px;
+                font-family: monospace;
+            }
+
+            pre {
+                background-color: #f4f4f4;
+                padding: 15px;
+                border-radius: 5px;
+                overflow-x: auto;
+            }
+
+            .note {
+                background-color: #fff8dc;
+                border-left: 4px solid #ffd700;
+                padding: 10px 15px;
+                margin: 15px 0;
+                border-radius: 0 5px 5px 0;
+            }
+
+            .back-link {
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <a href="index.html" class="back-link">← Back to Home</a>
+
+        <header id="setup">
+            <h1>HomeBot Setup Guide</h1>
+            <p>A comprehensive guide to setting up your HomeBot IoT system</p>
+        </header>
+
+        <div class="section">
+            <h2>System Requirements</h2>
+            <ul>
+                <li>Raspberry Pi 4 (2GB RAM or higher)</li>
+                <li>Compatible IoT sensors and actuators</li>
+                <li>Stable Wi-Fi connection</li>
+                <li>Power supply for Raspberry Pi</li>
+                <li>MicroSD card (16GB or larger)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Hardware Setup</h2>
+
+            <h3>Step 1: Prepare Your Raspberry Pi</h3>
+            <ol>
+                <li>Flash Raspberry Pi OS (32-bit) onto your microSD card using the Raspberry Pi Imager</li>
+                <li>Insert the microSD card into your Raspberry Pi</li>
+                <li>Connect the Raspberry Pi to a monitor, keyboard, and power supply</li>
+                <li>Complete the initial setup process (set language, username, password, and connect to Wi-Fi)</li>
+            </ol>
+
+            <h3>Step 2: Connect IoT Devices</h3>
+            <p>Follow the wiring diagram below to connect your devices to the appropriate GPIO pins:</p>
+            <pre>
+Light sensors: GPIO pins 17, 27
+Temperature sensor: GPIO pin 22
+Motion detector: GPIO pin 23
+Relay module (for controlling lights): GPIO pins 5, 6, 13, 19
+        </pre>
+
+            <div class="note">
+                <strong>Note:</strong> Ensure the Raspberry Pi is powered off when connecting or disconnecting any
+                hardware components.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Software Installation</h2>
+
+            <h3>Step 1: Update Your System</h3>
+            <p>Open Terminal and run the following commands:</p>
+            <pre>
+sudo apt update
+sudo apt upgrade -y
+        </pre>
+
+            <h3>Step 2: Install Required Dependencies</h3>
+            <pre>
+sudo apt install -y python3-pip git python3-dev python3-pil
+sudo pip3 install RPi.GPIO adafruit-circuitpython-dht
+sudo pip3 install flask flask-socketio paho-mqtt
+        </pre>
+
+            <h3>Step 3: Clone the HomeBot Repository</h3>
+            <pre>
+git clone https://github.com/zviko163/homebot.git
+cd homebot
+sudo pip3 install -r requirements.txt
+        </pre>
+
+            <h3>Step 4: Configure the System</h3>
+            <p>Edit the configuration file to match your setup:</p>
+            <pre>
+nano config.json
+        </pre>
+            <p>Adjust the settings according to your connected devices and network configuration.</p>
+        </div>
+
+        <div class="section">
+            <h2>Running HomeBot</h2>
+
+            <h3>Manual Start</h3>
+            <p>To start the HomeBot system manually:</p>
+            <pre>
+cd ~/homebot
+python3 app.py
+        </pre>
+
+            <h3>Auto-start on Boot</h3>
+            <p>To configure HomeBot to start automatically when your Raspberry Pi boots:</p>
+            <pre>
+sudo nano /etc/systemd/system/homebot.service
+        </pre>
+
+            <p>Add the following content:</p>
+            <pre>
+[Unit]
+Description=HomeBot IoT System
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/homebot/app.py
+WorkingDirectory=/home/pi/homebot
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+        </pre>
+
+            <p>Enable and start the service:</p>
+            <pre>
+sudo systemctl enable homebot.service
+sudo systemctl start homebot.service
+        </pre>
+        </div>
+
+        <div class="section">
+            <h2>Accessing the Web Interface</h2>
+            <p>Once HomeBot is running, you can access the web interface by opening a browser and navigating to:</p>
+            <code>http://[raspberry-pi-ip-address]:5000</code>
+            <p>Replace [raspberry-pi-ip-address] with the actual IP address of your Raspberry Pi.</p>
+
+            <div class="note">
+                <strong>Tip:</strong> You can find your Raspberry Pi's IP address by running <code>hostname -I</code> in
+                the terminal.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Testing Your Setup</h2>
+            <ol>
+                <li>Navigate to the web interface</li>
+                <li>Verify that all connected devices appear in the dashboard</li>
+                <li>Test each device by toggling controls or viewing sensor data</li>
+                <li>Set up a simple automation rule to test the system's response</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>Troubleshooting</h2>
+            <p>If you encounter issues during setup, check:</p>
+            <ul>
+                <li>All connections are secure and correctly placed</li>
+                <li>The Raspberry Pi has a stable power supply</li>
+                <li>Your Wi-Fi connection is stable</li>
+                <li>System logs for errors: <code>sudo journalctl -u homebot.service</code></li>
+            </ul>
+            <p>For more detailed troubleshooting information, refer to our <a href="#troubleshooting">Troubleshooting
+                    Guide</a>.</p>
+        </div>
+
+        <footer>
+            HomeBot Project &copy; 2023 | Setup Guide by Ruva
+        </footer>
+    </body>
+
+</html>
