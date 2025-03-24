@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeBot - API Reference</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        header {
+            background: #4e54c8;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        h1 { margin: 0; }
+        h2 { color: #4e54c8; border-bottom: 2px solid #8f94fb; padding-bottom: 5px; }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        footer {
+            margin-top: 40px;
+            padding: 15px;
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HomeBot API Reference</h1>
+        <p>by Fadzie</p>
+        <p><a href="index.html" style="color: #fff; text-decoration: underline;">← Back to Home</a></p>
+
+    </header>
+
+    <div class="section">
+        <h2>Base URL</h2>
+        <p><code>http://localhost:3000/api</code></p>
+    </div>
+
+    <div class="section">
+        <h2>Endpoints</h2>
+
+        <h3>1. Get All Devices</h3>
+        <p><code>GET /devices</code></p>
+        <p>Returns a list of all connected devices.</p>
+        <pre>{
+  "devices": [
+    { "id": 1, "name": "Living Room Light", "status": "on" },
+    { "id": 2, "name": "Thermostat", "status": "off" }
+  ]
+}</pre>
+
+        <h3>2. Add a New Device</h3>
+        <p><code>POST /devices</code></p>
+        <p>Adds a new device.</p>
+        <p><strong>Request body:</strong></p>
+        <pre>{
+  "name": "Bedroom Light",
+  "status": "off"
+}</pre>
+
+        <h3>3. Update Device</h3>
+        <p><code>PUT /devices/:id</code></p>
+        <p>Updates the status or name of an existing device.</p>
+
+        <h3>4. Delete Device</h3>
+        <p><code>DELETE /devices/:id</code></p>
+        <p>Deletes a device by its ID.</p>
+
+        <h3>5. Get System Status</h3>
+        <p><code>GET /status</code></p>
+        <p>Returns current system health and connectivity.</p>
+        <pre>{
+  "system": "healthy",
+  "connectedDevices": 4
+}</pre>
+    </div>
+
+    <footer>
+        HomeBot Project &copy; 2023
+    </footer>
+</body>
+</html>
