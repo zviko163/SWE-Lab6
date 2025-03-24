@@ -18,6 +18,3 @@ This project demonstrates a smart home automation system using IoT and Web techn
 - IoT devices (e.g., sensors, actuators).
 - Web technologies (HTML, CSS, JavaScript).
 - Backend server for device communication.
-
-### License
-This project is licensed under the MIT License.
